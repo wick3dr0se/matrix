@@ -13,7 +13,7 @@
 ## Acquisition
 stream `matrix` without downloading/installing
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/wick3dr0se/matrix/main/matrix.sh)
+bash <(curl -s https://raw.githubusercontent.com/wick3dr0se/matrix/main/matrix)
 ```
 
 otherwise, download
