@@ -1,6 +1,7 @@
 <div align="center">
 <h1>matrix 🌧️</h1>
 <p>A stupid simple matrix digital rain implemented in pure BASH v5.1+</p>
+<img src="matrix.gif">
 <img src="https://shields.io/badge/made-with%20%20bash-green?style=flat-square&color=d5c4a1&labelColor=1d2021&logo=gnu-bash">
 <img src=https://img.shields.io/badge/Maintained%3F-yes-green.svg></img>  
 <a href="https://discord.gg/W4mQqNnfSq">
