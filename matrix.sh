@@ -1,39 +1,41 @@
 #!/bin/bash
 
 SYMBOLS='0123456789!@#$%^&*()-_=+[]{}|;:,.<>?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+COLORS=('102;255;102' '255;176;0' '169;169;169')
 
 init_term() {
     shopt -s checkwinsize; (:;:)
-    printf '\e[?1049h\e[2J\e[?25l'
+    printf '\e[?1049h\e[?25l'
 }
 
-deinit_term(){
-    printf '\e[?1049l\e[?25h'
-}
+deinit_term(){ printf '\e[?1049l\e[?25h'; }
 
-animate() {
-    ((startPos=SRANDOM%LINES/4))
-    ((drawPos=SRANDOM%COLUMNS+1))
-    ((trailLen=SRANDOM%20))
-    ((color=SRANDOM&2))
+rain() {
+    ((startPos=SRANDOM%LINES/9))
+    ((dropPos=SRANDOM%COLUMNS+1))
+    ((dropLen=SRANDOM%(LINES/3)+2))
+    ((dropSpeed=SRANDOM%3+2))
+    color="${COLORS[SRANDOM%3]}"
 
-    for (( i = startPos; i <= LINES+trailLen; i++ )); do
+
+    for (( i = startPos; i <= LINES+dropLen; i++ )); do
         symbol="${SYMBOLS:SRANDOM%${#SYMBOLS}:1}"
-        printf '\e[%d;%dH\e[3%dm%s\e[m' "$i" "$drawPos" "$color" "$symbol"
-        (( i > trailLen ))&& printf '\e[%d;%dH\e[m ' "$((i-trailLen))" "$drawPos"
+        printf '\e[%d;%dH\e[2;38;2;%sm%s\e[m' "$i" "$dropPos" "$color" "$symbol"
+        (( i > dropLen ))&& printf '\e[%d;%dH\e[m ' "$((i-dropLen))" "$dropPos"
 
-        sleep 0.8
+        sleep "0.$dropSpeed"
     done
 }
 
 trap deinit_term EXIT
-trap 'wait; exit 1' INT
-trap init_term WINCH
+trap 'wait; stty echo; exit' INT
+trap 'init_term' WINCH
 
-main() {
+matrix() {
     init_term
-
-    for((;;)) { animate & sleep 0.1; }
+    stty -echo
+    
+    for((;;)) { rain & sleep 0.06; }
 }
 
-main
+matrix
