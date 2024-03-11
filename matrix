@@ -1,8 +1,5 @@
 #!/bin/bash
 
-SYMBOLS='0123456789!@#$%^&*()-_=+[]{}|;:,.<>?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-COLORS=('102;255;102' '255;176;0' '169;169;169')
-
 init_term() {
     shopt -s checkwinsize; (:;:)
     printf '\e[?1049h\e[2J\e[?25l'
@@ -15,13 +12,13 @@ rain() {
     ((dropCol=SRANDOM%COLUMNS+1))
     ((dropLen=SRANDOM%(LINES/2)+2))
     ((dropSpeed=SRANDOM%9+1))
-    ((dimDropCol=SRANDOM%4))
+    ((dropColDim=SRANDOM%4))
     color="${COLORS[SRANDOM%3]}"
 
-    for (( i = dropStart; i <= LINES+dropLen; i++ )); do
-        symbol="${SYMBOLS:SRANDOM%${#SYMBOLS}:1}"
+    for ((i = dropStart; i <= LINES+dropLen; i++)); do
+        symbol="${1:SRANDOM%${#1}:1}"
 
-        (( dimDropCol ))|| printf '\e[%d;%dH\e[1;38;2;%sm%s\e[m' \
+        (( dropColDim ))|| printf '\e[%d;%dH\e[1;38;2;%sm%s\e[m' \
             "$i" "$dropCol" "$color" "$symbol"
 
         (( i > dropStart ))&& printf '\e[%d;%dH\e[2;38;2;%sm%s\e[m' \
@@ -37,11 +34,13 @@ trap deinit_term EXIT
 trap 'wait; stty echo; exit' INT
 trap 'init_term' WINCH
 
+SYMBOLS='0123456789!@#$%^&*()-_=+[]{}|;:,.<>?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+COLORS=('102;255;102' '255;176;0' '169;169;169')
+
 matrix() {
-    init_term
-    stty -echo
+    init_term; stty -echo
     
-    for((;;)) { rain & sleep 0.1; }
+    for((;;)) { rain "$SYMBOLS" & sleep 0.1; }
 }
 
 matrix
