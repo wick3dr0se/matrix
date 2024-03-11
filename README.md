@@ -7,7 +7,6 @@
 <img src=https://img.shields.io/badge/Maintained%3F-yes-green.svg></img>  
 <a href="https://discord.gg/W4mQqNnfSq">
 <img src="https://discordapp.com/api/guilds/913584348937207839/widget.png?style=shield"/></a>
-<img src="./snake.gif">
 </div>
 
 ## Acquisition
