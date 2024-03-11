@@ -15,12 +15,18 @@ rain() {
     ((dropPos=SRANDOM%COLUMNS+1))
     ((dropLen=SRANDOM%(LINES/3)+2))
     ((dropSpeed=SRANDOM%3+2))
+    ((dimSwitch=SRANDOM%4))
     color="${COLORS[SRANDOM%3]}"
-
 
     for (( i = startPos; i <= LINES+dropLen; i++ )); do
         symbol="${SYMBOLS:SRANDOM%${#SYMBOLS}:1}"
-        printf '\e[%d;%dH\e[2;38;2;%sm%s\e[m' "$i" "$dropPos" "$color" "$symbol"
+
+        (( dimSwitch ))|| printf '\e[%d;%dH\e[1;38;2;%sm%s\e[m' \
+            "$i" "$dropPos" "$color" "$symbol"
+
+        (( i > startPos ))&& printf '\e[%d;%dH\e[2;38;2;%sm%s\e[m' \
+            "$((i-1))" "$dropPos" "$color" "$symbol"
+
         (( i > dropLen ))&& printf '\e[%d;%dH\e[m ' "$((i-dropLen))" "$dropPos"
 
         sleep "0.$dropSpeed"
