@@ -8,8 +8,8 @@ init_term() {
 deinit_term(){ printf '\e[?1049l\e[?25h'; }
 
 printat() {
-    x="$1" y="$2" fmt=$3 col="$4" symbol="$5"
-    printf '\e[%d;%dH\e[%s%sm%s\e[m' $x $y $fmt "$col" "$symbol" 
+    x="$1" y="$2" fmt=$3 color="$4" symbol="$5"
+    printf '\e[%d;%dH\e[%s%sm%s\e[m' $x $y $fmt "$color" "$symbol" 
 }
 
 rain() {
