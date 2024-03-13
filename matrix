@@ -25,7 +25,7 @@ rain() {
 
         (( dropColDim ))|| printat "$i" "$dropCol" "$BOLD" "$color" "$symbol"
 
-        (( i ))&& printat "$((i-1))" "$dropCol" "$REGULAR" "$color" "$symbol"
+        (( i > dropStart ))&& printat "$((i-1))" "$dropCol" "$REGULAR" "$color" "$symbol"
 
         (( i > dropLen ))&& printf '\e[%d;%dH\e[m ' "$((i-dropLen))" "$dropCol"
 
