@@ -7,22 +7,25 @@ init_term() {
 
 deinit_term(){ printf '\e[?1049l\e[?25h'; }
 
+printat() {
+    x="$1" y="$2" col="$3" symbol="$4"
+    printf '\e[%d;%dH\e[1;38;2;%sm%s\e[m' $x $y "$col" "$symbol" 
+}
+
 rain() {
     ((dropStart=SRANDOM%LINES/9))
     ((dropCol=SRANDOM%COLUMNS+1))
     ((dropLen=SRANDOM%(LINES/2)+2))
     ((dropSpeed=SRANDOM%9+1))
     ((dropColDim=SRANDOM%4))
-    color="${COLORS[SRANDOM%3]}"
+    color="${COLORS[SRANDOM%${#COLORS}]}"
 
     for ((i = dropStart; i <= LINES+dropLen; i++)); do
         symbol="${1:SRANDOM%${#1}:1}"
 
-        (( dropColDim ))|| printf '\e[%d;%dH\e[1;38;2;%sm%s\e[m' \
-            "$i" "$dropCol" "$color" "$symbol"
+        (( dropColDim ))|| printat "$i" "$dropCol" "$color" "$symbol"
 
-        (( i > dropStart ))&& printf '\e[%d;%dH\e[2;38;2;%sm%s\e[m' \
-            "$((i-1))" "$dropCol" "$color" "$symbol"
+        (( i ))&& printat "$((i-1))" "$dropCol" "$color" "$symbol"
 
         (( i > dropLen ))&& printf '\e[%d;%dH\e[m ' "$((i-dropLen))" "$dropCol"
 
