@@ -2,7 +2,7 @@
 
 init_term() {
     printf '\e[?1049h\e[2J\e[?25l'
-    shopt -s checkwinsize|| return 1; (:;:)
+    [ "${BASH_VERSINFO:-0}" -le 3 ] && read -r LINES COLUMNS < <(stty size) || shopt -s checkwinsize|| return 1; (:;:)
 }
 
 deinit_term(){ printf '\e[?1049l\e[?25h'; stty echo; }
@@ -33,7 +33,7 @@ trap deinit_term EXIT
 trap 'wait; exit' INT
 trap 'init_term' WINCH
 
-SYMBOLS='0123456789!@#$%^&*()-_=+[]{}|;:,.<>?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+SYMBOLS='アイウエオカキクケコサシスセリタチツテトナニヌネノハヒフへホマミムメモヤコヨラリルレロワンアアィイウウェエオオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプへベペホボ ポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 COLORS=('102;255;102' '255;176;0' '169;169;169')
 
 matrix() {
